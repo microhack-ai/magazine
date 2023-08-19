@@ -4,8 +4,6 @@ from langchain.embeddings import SentenceTransformerEmbeddings
 from langchain.vectorstores import Chroma
 import webvtt
 
-directory = './transcripts'
-
 # Modified function to handle unexpected line structures in the VTT file
 def convert_vtt_to_txt_safe_corrected(infile, outfile):
     """Convert VTT subtitle file to a plain text file with error handling for Caption objects."""
@@ -48,13 +46,22 @@ def split_docs(documents,chunk_size=1000,chunk_overlap=20):
 transcript = "Tim Ferriss - How to Learn Better & Create Your Best Future _ Huberman Lab Podcast-doupx8SAs5Y.en.vtt"
 #convert_vtt_to_txt_safe_corrected(transcript,"out.txt")
 
+directory = './transcripts'
 
 documents = load_docs(directory)
 docs = split_docs(documents)
 embeddings = SentenceTransformerEmbeddings(model_name="all-MiniLM-L6-v2")
-db = Chroma.from_documents(docs, embeddings)
+
+persist_directory = "chroma_db"
+
+vectordb = Chroma.from_documents(
+    documents=docs, embedding=embeddings, persist_directory=persist_directory
+)
+
+vectordb.persist()
+
 query = "What type of intermittent fasting are named?"
-matching_docs = db.similarity_search(query)
+matching_docs = vectordb.similarity_search(query)
 matching_docs[0]
 print(matching_docs[0])
 
