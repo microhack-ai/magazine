@@ -35,29 +35,6 @@ def convert_vtt_to_txt_safe_corrected(infile, outfile):
         f.write(transcript)
     print(f'Length of original:\t{len(vtt.content)} characters\nLength of final:\t{len(transcript)} characters\nPercent Reduction:\t{100 - len(transcript)*100/len(vtt.content):.0f}%')
 
-
-def convert_vtt_to_txt(infile, outfile):
-    """Convert VTT subtitle file to a plain text file."""
-    vtt = webvtt.read(infile)
-    transcript = ""
-    lines = []
-    last_speaker = None
-    for line in vtt:
-        speaker = line.lines[0].split('>')[0].split('v ')[1]
-        if last_speaker != speaker:
-            lines.append('\n'+speaker + ': ')
-        lines.extend(line.text.strip().splitlines())
-        last_speaker = speaker
-    previous = None
-    for line in lines:
-        if line == previous:
-            continue
-        transcript += f" {line}"
-        previous = line
-    with open(outfile, 'w') as f:
-        f.write(transcript)
-    print(f'Length of original:\t{len(vtt.content)} characters\nLength of final:\t{len(transcript)} characters\nPercent Reduction:\t{100 - len(transcript)*100/len(vtt.content):.0f}%')
-
 def load_docs(directory):
   loader = DirectoryLoader(directory)
   documents = loader.load()
