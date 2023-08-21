@@ -39,4 +39,4 @@ llm = ChatOpenAI(model_name=modelName)
 llmRespository = LlmRepository(apiKey, modelName, llm)
 
 useCase = SummaryUseCase(transcriptRepository, llmRespository)
-print(useCase.getAnswer("mushrooms?"))
+print(useCase.getAnswer("time"))
