@@ -1,2 +1,2 @@
-# summary
+# SummarIA
 Summary AI Agent
