@@ -1,2 +1,2 @@
 # summary
-WEB UI for Summary AI Agent
+Summary AI Agent
